@@ -1,9 +1,6 @@
 # BAM comparison
 Compares the numerical fields of two input BAM files created from different aligners (e.g. compares one aligner's MAPQ score to another on the same input FASTQ files)
 
-Tools:
-* [BamUtil](https://genome.sph.umich.edu/wiki/BamUtil:_diff)
-
 ## Steps
 0. **Install python environment**
 ```
