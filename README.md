@@ -13,4 +13,5 @@ Scripts to create DRAGEN reference files
 ## `dragen_pipelines`
 Scripts for DRAGEN pipelines
 
-
+## `wes_project`
+Template for creating WES BAMs w/ BQSR & DRAGEN
