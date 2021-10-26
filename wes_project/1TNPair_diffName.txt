@@ -1,0 +1,2 @@
+SAMPLE	TARGET	FASTQ_PE1	FASTQ_PE2	igo
+s_C_...	...	sample_R1.fastq.gz	sample_R2.fastq.gz

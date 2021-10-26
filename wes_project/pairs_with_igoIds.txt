@@ -1,0 +1,2 @@
+TUMOR_ID	NORMAL_ID	TumorIgoID	NormalIgoID
+sample_T	sample_N	t_igoID	n_igoID
