@@ -6,7 +6,7 @@ PATIENT=$3
 SEX=$4
 DGN_REF=$5
 
-if [[ ! -f ${B_ALLELE_VCF} || ! -f ${TUMOR_BAM} || -z ${PATIENT} || -z ${DGN_REF} || -z ${SEX} ]]; then
+if [[ -z ${B_ALLELE_VCF} || -z ${TUMOR_BAM} || -z ${PATIENT} || -z ${DGN_REF} || -z ${SEX} ]]; then
   echo "Please provide a *hard-filtered.vcf, tumor bam, patient, sex, & dragen reference"
   exit 1
 fi

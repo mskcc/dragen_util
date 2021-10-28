@@ -20,6 +20,7 @@ fastq_list=$(realpath ${fastq_list})
 tail -n+2 ${pairing_file} | while read d; do
   tumor_sample=$(echo ${d} | cut -d' ' -f1)
   normal_sample=$(echo ${d} | cut -d' ' -f2)
+  sex=$(echo ${d} | cut -d' ' -f3)
   patient=$(echo ${tumor_sample} | cut -d'_' -f1,2,3)
 
   echo "Creating bam scripts for patient=${patient} normal_sample=${normal_sample} tumor_sample=${tumor_sample}"
@@ -28,7 +29,8 @@ tail -n+2 ${pairing_file} | while read d; do
   align_and_vcf_script="drgn_create_bams___${normal_sample}.sh"
   cd ${align_and_vcf_dir}
   ${LOCATION}/drgn_cmd__make_bams.sh ${normal_sample} ${tumor_sample} ${patient} ${fastq_list} ${dragen_reference} >> ${align_and_vcf_script}
-  cd -
+  if [[ $? -ne 0 ]]; then printf "\tFAILED\n"; exit 1; fi
+  cd - > /dev/null
 
   echo "Creating bqsr script for patient=${patient} normal_sample=${normal_sample} tumor_sample=${tumor_sample}" 
   bqsr_dir=${patient}/bqsr
@@ -36,18 +38,30 @@ tail -n+2 ${pairing_file} | while read d; do
   # DRAGEN will create these files
   normal_bam=${align_and_vcf_dir}/${patient}.bam
   tumor_bam=${align_and_vcf_dir}/${patient}_tumor.bam
+
+  bqsr_normal_bam_path=${patient}/${normal_sample}
+  bqsr_tumor_bam_path=${patient}/${tumor_sample}
+  mkdir -p ${bqsr_normal_bam_path}
+  mkdir -p ${bqsr_tumor_bam_path}
+  bqsr_normal_bam_file=$(realpath ${bqsr_normal_bam_path}/${normal_sample}_bqsr.bam)
+  bqsr_tumor_bam_file=$(realpath ${bqsr_tumor_bam_path}/${tumor_sample}_bqsr.bam)
+
   normal_bqsr_script="drgn_create_bams___${normal_sample}.sh"
   tumor_bqsr_script="drgn_create_bams___${tumor_sample}.sh"
   cd ${bqsr_dir}
-  ${LOCATION}/bqsr_cmd.sh ${normal_bam} ${fasta_reference} ${normal_sample} >> ${normal_bqsr_script}
-  ${LOCATION}/bqsr_cmd.sh ${tumor_bam} ${fastq_reference} ${tumor_sample} >> ${tumor_bqsr_script}
-  cd -
+  ${LOCATION}/bqsr_cmd.sh ${normal_bam} ${fasta_reference} ${normal_sample} ${bqsr_normal_bam_file} >> ${normal_bqsr_script}
+  if [[ $? -ne 0 ]]; then printf "\tFAILED\n"; exit 1; fi
+  ${LOCATION}/bqsr_cmd.sh ${tumor_bam} ${fastq_reference} ${tumor_sample} ${tumor_bqsr_script} >> ${tumor_bqsr_script}
+  if [[ $? -ne 0 ]]; then printf "\tFAILED\n"; exit 1; fi
+  cd - > /dev/null
 
+  echo "Creating cnv scripts for patient=${patient} normal_sample=${normal_sample} tumor_sample=${tumor_sample}"
+  B_ALLELE_VCF="${align_and_vcf_dir}/${patient}.hard-filtered.vcf.gz"
   cnv_dir=${patient}/cnv
   mkdir -p ${cnv_dir}
   cnv_script="drgn_call_cnv___${patient}.sh"
   cd ${cnv_dir}
-  normal_vcf=${align_and_vcf_dir}/ 	# TODO
   ${LOCATION}/drgn_cmd__cnv_wgs.sh ${B_ALLELE_VCF} ${tumor_bam} ${patient} ${sex} ${dragen_reference} >> ${cnv_script}
-  cd -
+  if [[ $? -ne 0 ]]; then printf "\tFAILED\n"; exit 1; fi
+  cd - > /dev/null 
 done
