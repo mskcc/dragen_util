@@ -15,3 +15,6 @@ Scripts for DRAGEN pipelines
 
 ## `wes_project`
 Template for creating WES BAMs w/ BQSR & DRAGEN
+
+## `wgs_project`
+Template for creating WGS/BQSR/CNV BAMs 
