@@ -1,3 +1,3 @@
-RGID,RGSM,RGLB,Lane,Read1File,Read2File
-GATTACCA.ACCATTAG.1,normal_sample,1,normal_sample_R1_001.fastq.gz,normal_sample_R2_001.fastq.gz
-GATTACCA.ACCATTAG.1,tumor_sample,1,tumor_sample_R1_001.fastq.gz,tumor_sample_R2_001.fastq.gz
+RGPL,RGID,RGSM,RGLB,Lane,Read1File,Read2File
+illumina,GATTACCA.ACCATTAG.1,normal_sample,1,normal_sample_R1_001.fastq.gz,normal_sample_R2_001.fastq.gz
+illumina,GATTACCA.ACCATTAG.1,tumor_sample,1,tumor_sample_R1_001.fastq.gz,tumor_sample_R2_001.fastq.gz
