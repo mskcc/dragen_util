@@ -60,7 +60,7 @@ tail -n+2 ${pairing_file} | while read d; do
   cd ${bqsr_dir}
   ${LOCATION}/bqsr_cmd.sh ${normal_bam} ${fasta_reference} ${normal_sample} ${bqsr_normal_bam_file} >> ${normal_bqsr_script}
   if [[ $? -ne 0 ]]; then printf "\tFAILED\n"; exit 1; fi
-  ${LOCATION}/bqsr_cmd.sh ${tumor_bam} ${fastq_reference} ${tumor_sample} ${bqsr_tumor_bam_file} ${tumor_bqsr_script} >> ${tumor_bqsr_script}
+  ${LOCATION}/bqsr_cmd.sh ${tumor_bam} ${fasta_reference} ${tumor_sample} ${bqsr_tumor_bam_file} >> ${tumor_bqsr_script}
   if [[ $? -ne 0 ]]; then printf "\tFAILED\n"; exit 1; fi
   cd - > /dev/null
 
