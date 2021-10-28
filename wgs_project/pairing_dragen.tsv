@@ -1,2 +1,2 @@
 TUMOR_ID	NORMAL_ID	SEX
-tumor_sample	normal_sample	FEMALE
+patient_sample_id_tumor	patient_sample_id_normal	FEMALE
